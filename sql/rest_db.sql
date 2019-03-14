@@ -41,27 +41,30 @@ CREATE TABLE actions (
 	UNIQUE (id, description)
 );
 
-CREATE TABLE dbas (
+CREATE TABLE restaurants (
 	id  		INTEGER NOT NULL PRIMARY KEY,
+	camis 		INTEGER NOT NULL,
 	dba 		VARCHAR (150) NOT NULL,
 	boro_id		INTEGER REFERENCES boros(id) NOT NULL,
 	building	VARCHAR(100),
 	street		VARCHAR(200),
 	zip_code	VARCHAR(5),
-	phone		VARCHAR(10),
-	cuisines_id	INTEGER REFERENCES cuisines(id) NOT NULL
+	phone		VARCHAR(15),
+	cuisine_id	INTEGER REFERENCES cuisines(id) NOT NULL,
+
+	UNIQUE (id, camis, dba)
 );
 
 CREATE TABLE inspections (
-	camis_id 			INTEGER PRIMARY KEY NOT NULL,
-	dba_id 				INTEGER REFERENCES dbas(id) NOT NULL,
-	inspection_date		DATE,
+	id  				SERIAL PRIMARY KEY,
+	restaurant_id 		INTEGER REFERENCES restaurants(id) NOT NULL,
+	inspect_date		DATE NULL,
 	action_id			INTEGER REFERENCES actions(id) NOT NULL,
 	violation_id		INTEGER REFERENCES violation_codes(id) NOT NULL,
 	critical_flag_id 	INTEGER REFERENCES critical_flags(id) NOT NULL,
 	score				INTEGER,
 	grade				VARCHAR(10),
-	grade_date			DATE,
-	record_date			DATE,
-	inspection_type_id 	INTEGER REFERENCES inspection_types(id) NOT NULL
+	grade_date			DATE NULL,
+	record_date			DATE NULL,
+	inspect_type_id 	INTEGER REFERENCES inspection_types(id) NOT NULL
 );
