@@ -47,14 +47,14 @@ CREATE TABLE dbas (
 	boro_id		INTEGER REFERENCES boros(id) NOT NULL,
 	building	VARCHAR(100),
 	street		VARCHAR(200),
-	zip_code	INTEGER,
-	phone		INTEGER,
+	zip_code	VARCHAR(5),
+	phone		VARCHAR(10),
 	cuisines_id	INTEGER REFERENCES cuisines(id) NOT NULL
 );
 
 CREATE TABLE inspections (
 	camis_id 			INTEGER PRIMARY KEY NOT NULL,
-	dba_id INTEGER  	REFERENCES dbas(id) NOT NULL,
+	dba_id 				INTEGER REFERENCES dbas(id) NOT NULL,
 	inspection_date		DATE,
 	action_id			INTEGER REFERENCES actions(id) NOT NULL,
 	violation_id		INTEGER REFERENCES violation_codes(id) NOT NULL,
