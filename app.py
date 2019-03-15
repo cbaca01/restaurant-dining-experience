@@ -9,14 +9,14 @@ def getData():
 	data = {}
 
 	query = """
-		SELECT r.camis_id,
+		SELECT r.camis_id AS camis,
 			   r.dba,
 			   b.name AS boro,
 			   r.building,
 			   r.street,
-			   r.zip_code,
+			   r.zip_code AS zipcode,
 			   r.phone,
-			   to_char(i.inspect_date, 'mm/dd/yyyy'),
+			   to_char(i.inspect_date, 'mm/dd/yyyy') AS inspection_date,
 			   c.description AS cuisine_description,
 			   a.description AS action,
 			   v.code AS violation_code,
@@ -24,8 +24,8 @@ def getData():
 			   cf.description AS critical_flag,
 			   i.score,
 			   g.label AS grade,
-			   to_char(i.grade_date, 'mm/dd/yyyy'),
-			   to_char(i.record_date, 'mm/dd/yyyy'),
+			   to_char(i.grade_date, 'mm/dd/yyyy') AS grade_date,
+			   to_char(i.record_date, 'mm/dd/yyyy') AS record_date,
 			   it.description AS inspection_type
 		FROM inspections i
 		INNER JOIN restaurants r ON i.restaurant_id = r.camis_id
