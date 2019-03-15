@@ -37,7 +37,6 @@ def getData():
 		INNER JOIN grades g ON i.grade_id = g.id
 		INNER JOIN inspection_types it ON i.inspect_type_id = it.id
 		WHERE g.score >= :grade_score
-		LIMIT 10
 	"""
 	qParams = {'grade_score': 80}
 
@@ -45,8 +44,8 @@ def getData():
 
 	data = []
 	for i, row in enumerate(results):
+		# This puts the data in dicionary format so it can outputed in JSON properly
 		data.append(dict(zip(row.keys(), row)))
-
 
 	return jsonify(data)
  
