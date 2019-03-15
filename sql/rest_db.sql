@@ -73,14 +73,14 @@ CREATE TABLE inspections (
 	id  				SERIAL PRIMARY KEY,
 	restaurant_id 		INTEGER REFERENCES restaurants(camis_id) NOT NULL,
 	inspect_date		DATE NULL,
-	action_id			INTEGER REFERENCES actions(id) NOT NULL,
-	violation_id		INTEGER REFERENCES violation_codes(id) NOT NULL,
+	action_id			INTEGER REFERENCES actions(id) NULL,
+	violation_id		INTEGER REFERENCES violation_codes(id) NULL,
 	critical_flag_id 	INTEGER REFERENCES critical_flags(id) NOT NULL,
-	score				INTEGER,
-	grade_id			INTEGER REFERENCES grades(id) NOT NULL,
+	score				INTEGER NULL,
+	grade_id			INTEGER REFERENCES grades(id) NULL,
 	grade_date			DATE NULL,
 	record_date			DATE NULL,
-	inspect_type_id 	INTEGER REFERENCES inspection_types(id) NOT NULL
+	inspect_type_id 	INTEGER REFERENCES inspection_types(id) NULL
 );
 
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO rdxuser;
