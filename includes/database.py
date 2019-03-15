@@ -11,10 +11,10 @@ dotenv_path = join(dirname(__file__), 'config.env')
 load_dotenv(dotenv_path)
 
 # retrieving our database connection parameters
-DBHOST  	 = os.getenv('DBHOST')
-DBNAME 		 = os.getenv('DBNAME')
-DBUSER  	 = os.getenv('DBUSER')
-DBPASSWORD   = os.getenv('DBPASSWORD')
+DBHOST = os.getenv('DBHOST')
+DBNAME = os.getenv('DBNAME')
+DBUSER  = os.getenv('DBUSER')
+DBPASSWORD = os.getenv('DBPASSWORD')
 
 Base = automap_base()
 
