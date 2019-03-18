@@ -52,11 +52,14 @@ If a grade parameter is entered and it is not either A, B, or C, then this respo
 Click the links to view sample calls this API would do.
 ---
 We are looking for restaurants that have at least a letter grade of B that serve Thai food.
+
 <https://intense-reaches-40403.herokuapp.com/getdata?grade=B&cuisine_type=Thai>
 
 We are looking for restaurants that have at least a letter grade of A that serve Mexican food
+
 <https://intense-reaches-40403.herokuapp.com/getdata?grade=A&cuisine_type=mexican>
 
 ### Calls that would fail
 We are looking for restaurants that have a letter grade of H that serve Greek food:
+
 <https://intense-reaches-40403.herokuapp.com/getdata?grade=H&cuisine_type=Greek>
