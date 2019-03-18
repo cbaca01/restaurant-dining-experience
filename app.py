@@ -1,13 +1,16 @@
-from flask import Flask, jsonify
+from flask import Flask, request, url_for, jsonify
 from includes.database import *
 app = Flask(__name__)
 
 session = Session(engine)
 
-@app.route("/getdata")
+# Request for getting our data
+@app.route("/getdata", methods=['GET'])
 def getData():
-	data = {}
+	grade = request.args.get('grade')
+	cuisine_type = request.args.get('cuisine_type')
 
+	# Query that retrieves call
 	query = """
 		SELECT r.camis_id AS camis,
 			   r.dba,
@@ -16,17 +19,7 @@ def getData():
 			   r.street,
 			   r.zip_code AS zipcode,
 			   r.phone,
-			   to_char(i.inspect_date, 'mm/dd/yyyy') AS inspection_date,
-			   c.description AS cuisine_description,
-			   a.description AS action,
-			   v.code AS violation_code,
-			   v.description AS violation_description,
-			   cf.description AS critical_flag,
-			   i.score,
-			   g.label AS grade,
-			   to_char(i.grade_date, 'mm/dd/yyyy') AS grade_date,
-			   to_char(i.record_date, 'mm/dd/yyyy') AS record_date,
-			   it.description AS inspection_type
+			   g.label AS grade
 		FROM inspections i
 		INNER JOIN restaurants r ON i.restaurant_id = r.camis_id
 		INNER JOIN boros b ON r.boro_id = b.id
@@ -36,10 +29,20 @@ def getData():
 		INNER JOIN critical_flags cf ON i.critical_flag_id = cf.id
 		INNER JOIN grades g ON i.grade_id = g.id
 		INNER JOIN inspection_types it ON i.inspect_type_id = it.id
-		WHERE g.score >= :grade_score
+		WHERE c.id = (
+			SELECT c.id FROM cuisines c WHERE LOWER(c.description) = LOWER(:cuisine_type)
+		)
+		GROUP BY r.camis_id, r.dba, b.name, g.label, g.score
+		HAVING g.score >= (
+			SELECT g.score FROM grades g WHERE LOWER(g.label) = LOWER(:grade)
+		)
+		ORDER BY r.dba
 	"""
-	qParams = {'grade_score': 80}
 
+	qParams = {
+		'grade': grade,
+		'cuisine_type': cuisine_type
+	}
 	results = session.execute(query, qParams)
 
 	data = []
