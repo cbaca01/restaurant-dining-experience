@@ -4,11 +4,34 @@ app = Flask(__name__)
 
 session = Session(engine)
 
+# Function where we handle validation
+def validationCheck(**kwargs):
+	# validation - if these values fail return a 400 (BAD REQUEST) error
+	content = []
+	if kwargs.get('grade') not in ['A', 'B', 'C']:
+		content.append({'grade': kwargs.get('grade') + ' is not a valid grade.  Only A, B, or C are acceptable'})
+
+	# returning there is content return True else return response
+	if len(content) > 0:
+		resp = jsonify(content)
+		resp.status_code = 400	
+		return resp
+	else:
+		return True
+
+
 # Request for getting our data
 @app.route("/getdata", methods=['GET'])
 def getData():
-	grade = request.args.get('grade')
-	cuisine_type = request.args.get('cuisine_type')
+	grade = 'B' if request.args.get('grade') is None else request.args.get('grade')
+	cuisine_type = 'Thai' if request.args.get('cuisine_type') is None else request.args.get('cuisine_type')
+
+	# validation - if these values fail return a 400 (BAD REQUEST) error
+	resp = validationCheck(grade=grade)
+	if resp is not True:
+		return resp
+
+	# validation passed.  We can continue
 
 	# Query that retrieves call
 	query = """
@@ -39,12 +62,14 @@ def getData():
 		ORDER BY r.dba
 	"""
 
+	# executing our query
 	qParams = {
 		'grade': grade,
 		'cuisine_type': cuisine_type
 	}
 	results = session.execute(query, qParams)
 
+	# outputting results as a json data set
 	data = []
 	for i, row in enumerate(results):
 		# This puts the data in dicionary format so it can outputed in JSON properly
