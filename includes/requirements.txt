@@ -68,7 +68,7 @@ six==1.5.2
 system-service==0.1.6
 uTidylib==0.2
 urlgrabber==3.9.1
-urllib3==1.7.1
+urllib3==1.26.5
 virtualenv==1.11.4
 wsgiref==0.1.2
 yum-metadata-parser==1.1.4
